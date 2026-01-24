@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Counter from './components/Counter';
 import UserProfile from './components/UserProfile';
 import './App.css';
 import Header from './components/Header';
@@ -17,6 +18,7 @@ function App() {
         age={25} 
         bio="Loves hiking and photography" 
       />
+      <Counter />
     </div>
   );
 }
