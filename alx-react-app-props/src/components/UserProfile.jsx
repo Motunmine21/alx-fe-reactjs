@@ -1,7 +1,7 @@
 
 
 import { useContext } from "react";
-import UserContext from "../UserContext";
+import UserContext from "../components/UserContext";
 
 const UserProfile = () => {
   const user = useContext(UserContext);
@@ -9,7 +9,7 @@ const UserProfile = () => {
   return (
     <div>
       <h2>{user.name}</h2>
-      <p>Email: {user.email}</p>
+      <p> {user.email}</p>
     </div>
   );
 };
