@@ -16,7 +16,7 @@ function App() {
     <UserContext.Provider value={userData}>
       <Header />
       <MainContent />
-      <UserProfile name="Alice" age={25} bio="Loves hiking and photography" />
+      <UserProfile />
       <ProfilePage />
       <Footer />
     </UserContext.Provider>
