@@ -1,56 +1,52 @@
 import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import "./Search.css"; 
 
 const Search = () => {
   const [username, setUsername] = useState("");
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [location, setLocation] = useState("");
+  const [minRepos, setMinRepos] = useState("");
 
-  const handleSubmit = async (event) => {
+  const handleSearch = (event) => {
     event.preventDefault();
-
-    if (!username) return;
-
-    setLoading(true);
-    setError(false);
-    setUser(null);
-
-    try {
-      const data = await fetchUserData(username);
-      setUser(data);
-    } catch (err) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
+   
+    console.log({ username, location, minRepos });
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Enter GitHub username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <button type="submit">Search</button>
-      </form>
-
-      
-      {loading && <p>Loading...</p>}
-      {error && <p>Looks like we cant find the user</p>}
-
-      {user && (
-        <div>
-          <img src={user.avatar_url} alt={user.login} width="150" />
-          <h2>{user.name || user.login}</h2>
-          <a href={user.html_url} target="_blank" rel="noreferrer">
-            View GitHub Profile
-          </a>
-        </div>
-      )}
+    <div className="container">
+      <div className="search-card">
+        <h1>GitHub User Search</h1>
+        <form onSubmit={handleSearch}>
+          <div className="form-group">
+            <label>Username</label>
+            <input
+              type="text"
+              value={username}
+              placeholder="GitHub username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Location</label>
+            <input
+              type="text"
+              value={location}
+              placeholder="e.g., Lagos"
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Minimum Repositories</label>
+            <input
+              type="number"
+              value={minRepos}
+              placeholder="e.g., 10"
+              onChange={(e) => setMinRepos(e.target.value)}
+            />
+          </div>
+          <button type="submit">Search</button>
+        </form>
+      </div>
     </div>
   );
 };
