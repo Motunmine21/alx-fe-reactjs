@@ -1,17 +1,17 @@
-
-const BASE_URL = "https://api.github.com";
+const BASE_URL = "https://api.github.com/search/users?q=";
 
 export const searchUsers = async ({ username, location, minRepos }) => {
   try {
-   
     let query = username ? `${username} in:login` : "";
     if (location) query += ` location:${location}`;
     if (minRepos) query += ` repos:>=${minRepos}`;
 
-    const response = await fetch(`${BASE_URL}/search/users?q=${encodeURIComponent(query)}&per_page=20`);
+    const response = await fetch(
+      `${BASE_URL}${encodeURIComponent(query)}&per_page=20`
+    );
+
     const data = await response.json();
 
-   
     const detailedUsers = await Promise.all(
       data.items.map(async (user) => {
         const res = await fetch(user.url);
