@@ -7,14 +7,11 @@ const Search = () => {
   const [minRepos, setMinRepos] = useState("");
   const [users, setUsers] = useState([]);
 
-  // Set page title
   useEffect(() => {
     document.title = "GitHub User Search";
   }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
+  const fetchUserData = async () => {
     const results = await searchUsers({
       username,
       location,
@@ -22,6 +19,11 @@ const Search = () => {
     });
 
     setUsers(results);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await fetchUserData();
   };
 
   return (
@@ -32,7 +34,6 @@ const Search = () => {
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-5 text-left">
-          {/* Username */}
           <div>
             <label className="block mb-2 font-bold text-gray-900">
               Username
@@ -46,7 +47,6 @@ const Search = () => {
             />
           </div>
 
-          {/* Location */}
           <div>
             <label className="block mb-2 font-bold text-gray-900">
               Location
@@ -60,7 +60,6 @@ const Search = () => {
             />
           </div>
 
-          {/* Minimum Repositories */}
           <div>
             <label className="block mb-2 font-bold text-gray-900">
               Minimum Repositories
@@ -82,7 +81,6 @@ const Search = () => {
           </button>
         </form>
 
-        
         {users.length > 0 && (
           <div className="mt-8 space-y-4 text-left">
             {users.map((user) => (
@@ -101,7 +99,6 @@ const Search = () => {
                     {user.login}
                   </p>
 
-                  
                   <a
                     href={user.html_url}
                     target="_blank"
