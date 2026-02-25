@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { searchUsers } from "../services/githubService";
 
 const Search = () => {
   const [username, setUsername] = useState("");
@@ -14,22 +15,17 @@ const Search = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      const query = `${username}+location:${location}+repos:>=${minRepos}`;
+    const results = await searchUsers({
+      username,
+      location,
+      minRepos,
+    });
 
-      const response = await fetch(
-        `https://api.github.com/search/users?q=${query}`
-      );
-
-      const data = await response.json();
-      setUsers(data.items || []);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
+    setUsers(results);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 font-sans">
+    <div className="flex justify-center items-start min-h-screen bg-gray-100 font-sans p-6">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md text-center">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">
           GitHub User Search
@@ -86,9 +82,9 @@ const Search = () => {
           </button>
         </form>
 
-        {/* Conditional rendering using && */}
+        
         {users.length > 0 && (
-          <div className="mt-6 space-y-4">
+          <div className="mt-8 space-y-4 text-left">
             {users.map((user) => (
               <div
                 key={user.id}
@@ -99,7 +95,22 @@ const Search = () => {
                   alt={user.login}
                   className="w-12 h-12 rounded-full"
                 />
-                <p className="font-semibold">{user.login}</p>
+
+                <div>
+                  <p className="font-semibold text-gray-900">
+                    {user.login}
+                  </p>
+
+                  
+                  <a
+                    href={user.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline text-sm"
+                  >
+                    View Profile
+                  </a>
+                </div>
               </div>
             ))}
           </div>
